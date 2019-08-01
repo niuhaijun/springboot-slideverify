@@ -5,6 +5,8 @@ import com.niu.springbootslideverify.utils.RandomCutPicUtils;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Map;
+import javax.imageio.ImageIO;
+import org.apache.commons.io.FileUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;

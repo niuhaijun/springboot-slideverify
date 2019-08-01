@@ -313,4 +313,20 @@ public class RandomCutPicUtils {
     fos.close();
   }
 
+  /**
+   * 图片文件输出
+   *
+   * @param image 图
+   * @param imagePath 图的输出路径
+   */
+  public static void outputImageFile(BufferedImage image, File imagePath) throws Exception {
+
+    ByteArrayOutputStream os = new ByteArrayOutputStream();
+    ImageIO.write(image, "png", os);
+    byte[] newImages = os.toByteArray();
+    FileOutputStream fos = new FileOutputStream(imagePath);
+    fos.write(newImages);
+    fos.close();
+  }
+
 }
