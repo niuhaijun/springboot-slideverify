@@ -1,5 +1,9 @@
 package com.niu.springbootslideverify.utils;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -101,25 +105,22 @@ public class RandomCutPicUtils {
 
         int rgb = templateImage[i][j];
 
-        try {
-          bgImage.getRGB(x + i, y + j);
-        }
-        catch (Exception e) {
-          System.out.println("" + (x + i) + " " + (y + j));
-          System.exit(1);
-        }
-
         int rgb_ori = bgImage.getRGB(x + i, y + j);
 
         if (rgb == 1) {
           //抠图上复制对应颜色值
           blankImage.setRGB(i, j, rgb_ori);
+
+//          int r = (0xff & rgb_ori);
+//          int g = (0xff & (rgb_ori >> 8));
+//          int b = (0xff & (rgb_ori >> 16));
+//          rgb_ori = r + (g << 8) + (b << 16) + (150 << 24);
           //原图对应位置颜色变化
           bgImage.setRGB(x + i, y + j, rgb_ori & 0x363636);
         }
         else {
           //这里把背景设为透明
-          blankImage.setRGB(i, j, rgb_ori & 0x00ffffff);
+          blankImage.setRGB(i, j, rgb_ori & 0x00FFFFFF);
         }
       }
     }
@@ -238,8 +239,16 @@ public class RandomCutPicUtils {
     // 抠图(空白)
     BufferedImage blankImage = new BufferedImage(TEMPLATE_WIDTH, TEMPLATE_HEIGHT,
         BufferedImage.TYPE_4BYTE_ABGR);
+    Graphics2D graphics = blankImage.createGraphics();
+    graphics.setBackground(Color.white);
 
     cutByTemplate(bgImage, blankImage, templateImage, xBegin, yBegin);
+
+    // 抗锯齿”的属性
+    graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    graphics.setStroke(new BasicStroke(5, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL));
+    graphics.drawImage(blankImage, 0, 0, null);
+    graphics.dispose();
 
     Map<String, BufferedImage> resultMap = new HashMap<>(2);
     //大图

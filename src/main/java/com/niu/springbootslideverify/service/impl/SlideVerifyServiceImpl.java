@@ -5,8 +5,6 @@ import com.niu.springbootslideverify.utils.RandomCutPicUtils;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Map;
-import javax.imageio.ImageIO;
-import org.apache.commons.io.FileUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -38,10 +36,21 @@ public class SlideVerifyServiceImpl implements SlideVerifyService {
     BufferedImage big = resultMap.get("big");
     BufferedImage small = resultMap.get("small");
 
-    RandomCutPicUtils.outputImageFile(big,
-        "/Users/niuhaijun/springboot-slideverify/src/main/resources/tmp/背景图.png");
-    RandomCutPicUtils.outputImageFile(small,
-        "/Users/niuhaijun/springboot-slideverify/src/main/resources/tmp/切图.png");
+    String os = System.getProperty("os.name");
+    if ("Windows 10".equals(os)) {
+
+      RandomCutPicUtils.outputImageFile(big,
+          "c:/Users/lenovo/Downloads/背景图.png");
+      RandomCutPicUtils.outputImageFile(small,
+          "c:/Users/lenovo/Downloads/切图.png");
+    }
+    else {
+
+      RandomCutPicUtils.outputImageFile(big,
+          "/Users/niuhaijun/springboot-slideverify/src/main/resources/tmp/背景图.png");
+      RandomCutPicUtils.outputImageFile(small,
+          "/Users/niuhaijun/springboot-slideverify/src/main/resources/tmp/切图.png");
+    }
   }
 
 
